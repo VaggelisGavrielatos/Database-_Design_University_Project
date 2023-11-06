@@ -1,0 +1,232 @@
+-- SQLINES DEMO *** le SQL Developer Data Modeler 21.4.2.059.0838
+-- SQLINES DEMO *** -06-06 16:03:30 EEST
+-- SQLINES DEMO *** le Database 12c
+-- SQLINES DEMO *** le Database 12c
+
+
+
+-- SQLINES DEMO *** no DDL - MDSYS.SDO_GEOMETRY
+
+-- SQLINES DEMO *** no DDL - XMLTYPE
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE address (
+    adname      VARCHAR(14) NOT NULL,
+    adnum       INTEGER NOT NULL,
+    adtown      VARCHAR(20) NOT NULL,
+    adtk        INTEGER NOT NULL,
+    employee_id INTEGER NOT NULL
+);
+
+ALTER TABLE address ADD CONSTRAINT address_pk PRIMARY KEY ( adname );
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE batch (
+    codebatch         INTEGER NOT NULL,
+    arrivaldate       DATETIME NOT NULL,
+    partsnum          INTEGER NOT NULL,
+    checkdate         DATETIME NOT NULL,
+    bin_codebin       INTEGER NOT NULL,
+    manager_managerid INTEGER NOT NULL
+);
+
+ALTER TABLE batch ADD CONSTRAINT batch_pk PRIMARY KEY ( codebatch );
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE bin (
+    codebin          INTEGER NOT NULL,
+    capacity         INTEGER NOT NULL,
+    warehouse_codewh VARCHAR(4) NOT NULL
+);
+
+ALTER TABLE bin ADD CONSTRAINT bin_pk PRIMARY KEY ( codebin );
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE combination (
+    codecomb VARCHAR(5) NOT NULL,
+    numcomb  DOUBLE NOT NULL
+);
+
+ALTER TABLE combination ADD CONSTRAINT combination_pk PRIMARY KEY ( codecomb );
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE employee (
+    id                INTEGER NOT NULL,
+    fathername        VARCHAR(10) NOT NULL,
+    lastname          VARCHAR(10) NOT NULL,
+    manager_managerid INTEGER NOT NULL
+);
+
+ALTER TABLE employee ADD CONSTRAINT employee_pk PRIMARY KEY ( id );
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE manager (
+    managerid INTEGER NOT NULL
+);
+
+ALTER TABLE manager ADD CONSTRAINT manager_pk PRIMARY KEY ( managerid );
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE name (
+    name        VARCHAR(10) NOT NULL,
+    employee_id INTEGER NOT NULL
+);
+
+ALTER TABLE name ADD CONSTRAINT name_pk PRIMARY KEY ( name );
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE old_orders (
+    orders_codeorder VARCHAR(7) NOT NULL
+);
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE UNIQUE INDEX old_orders__idx ON
+    old_orders (
+        orders_codeorder
+    ASC );
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE orders (
+    codeorder         VARCHAR(7) NOT NULL,
+    odate             DATETIME NOT NULL,
+    quantity          INTEGER NOT NULL,
+    manager_managerid INTEGER NOT NULL
+);
+
+ALTER TABLE orders ADD CONSTRAINT orders_pk PRIMARY KEY ( codeorder );
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE part (
+    codepart             VARCHAR(5) NOT NULL,
+    batch_codebatch      INTEGER NOT NULL,
+    combination_codecomb VARCHAR(5) NOT NULL
+);
+
+ALTER TABLE part ADD CONSTRAINT part_pk PRIMARY KEY ( codepart );
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE phone (
+    `Number`    BIGINT NOT NULL,
+    employee_id INTEGER NOT NULL
+);
+
+ALTER TABLE phone ADD CONSTRAINT phone_pk PRIMARY KEY ( `Number` );
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE piece (
+    leavedate       DATETIME NOT NULL,
+    batch_codebatch INTEGER NOT NULL,
+    employee_id     INTEGER NOT NULL
+);
+
+ALTER TABLE piece ADD CONSTRAINT piece_pk PRIMARY KEY ( leavedate );
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE warehouse (
+    codewh            VARCHAR(4) NOT NULL,
+    manager_managerid INTEGER NOT NULL
+);
+
+ALTER TABLE warehouse ADD CONSTRAINT warehouse_pk PRIMARY KEY ( codewh );
+
+ALTER TABLE address
+    ADD CONSTRAINT address_employee_fk FOREIGN KEY ( employee_id )
+        REFERENCES employee ( id );
+
+ALTER TABLE batch
+    ADD CONSTRAINT batch_bin_fk FOREIGN KEY ( bin_codebin )
+        REFERENCES bin ( codebin );
+
+ALTER TABLE batch
+    ADD CONSTRAINT batch_manager_fk FOREIGN KEY ( manager_managerid )
+        REFERENCES manager ( managerid );
+
+ALTER TABLE bin
+    ADD CONSTRAINT bin_warehouse_fk FOREIGN KEY ( warehouse_codewh )
+        REFERENCES warehouse ( codewh );
+
+ALTER TABLE employee
+    ADD CONSTRAINT employee_manager_fk FOREIGN KEY ( manager_managerid )
+        REFERENCES manager ( managerid );
+
+ALTER TABLE name
+    ADD CONSTRAINT name_employee_fk FOREIGN KEY ( employee_id )
+        REFERENCES employee ( id );
+
+ALTER TABLE old_orders
+    ADD CONSTRAINT old_orders_orders_fk FOREIGN KEY ( orders_codeorder )
+        REFERENCES orders ( codeorder );
+
+ALTER TABLE orders
+    ADD CONSTRAINT orders_manager_fk FOREIGN KEY ( manager_managerid )
+        REFERENCES manager ( managerid );
+
+ALTER TABLE part
+    ADD CONSTRAINT part_batch_fk FOREIGN KEY ( batch_codebatch )
+        REFERENCES batch ( codebatch );
+
+ALTER TABLE part
+    ADD CONSTRAINT part_combination_fk FOREIGN KEY ( combination_codecomb )
+        REFERENCES combination ( codecomb );
+
+ALTER TABLE phone
+    ADD CONSTRAINT phone_employee_fk FOREIGN KEY ( employee_id )
+        REFERENCES employee ( id );
+
+ALTER TABLE piece
+    ADD CONSTRAINT piece_batch_fk FOREIGN KEY ( batch_codebatch )
+        REFERENCES batch ( codebatch );
+
+ALTER TABLE piece
+    ADD CONSTRAINT piece_employee_fk FOREIGN KEY ( employee_id )
+        REFERENCES employee ( id );
+
+ALTER TABLE warehouse
+    ADD CONSTRAINT warehouse_manager_fk FOREIGN KEY ( manager_managerid )
+        REFERENCES manager ( managerid );
+
+
+
+-- SQLINES DEMO *** per Data Modeler Summary Report: 
+-- 
+-- SQLINES DEMO ***                        13
+-- SQLINES DEMO ***                         1
+-- SQLINES DEMO ***                        26
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO *** DY                      0
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***  TYPE                   0
+-- SQLINES DEMO ***  TYPE                   0
+-- SQLINES DEMO ***  TYPE BODY              0
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO *** EGMENT                  0
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO *** ED VIEW                 0
+-- SQLINES DEMO *** ED VIEW LOG             0
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***                         0
+-- 
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***                         0
+-- 
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***                         0
+-- 
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO *** A                       0
+-- SQLINES DEMO *** T                       0
+-- 
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***                         0
